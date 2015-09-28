@@ -35,7 +35,7 @@ github_link = "https://github.com/frappe/erpnext"
 error_report_email = "support@erpnext.com"
 
 app_include_js = "assets/js/erpnext.min.js"
-app_include_css = "assets/css/erpnext.css"
+app_include_css = "assets/css/justerp.css"
 web_include_js = "assets/js/erpnext-web.min.js"
 web_include_css = "assets/erpnext/css/website.css"
 
