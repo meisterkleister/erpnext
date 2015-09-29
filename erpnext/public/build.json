@@ -9,6 +9,9 @@
 		"public/js/website_utils.js",
 		"public/js/shopping_cart.js"
 	],
+	"css/justerp-website.css": [
+		"public/css/justerp-website.css"
+	],
 	"js/erpnext.min.js": [
 		"public/js/conf.js",
 		"public/js/feature_setup.js",
