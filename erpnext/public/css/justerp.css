@@ -1,5 +1,9 @@
 
 /*
+ *	/home/syskleister/frappe-bench/apps/erpnext/erpnext/public/css/justerp.css
+ */
+
+/*
  *	/home/syskleister/frappe-bench/apps/erpnext/erpnext/public/css/erpnext.css
  */
 .erpnext-footer {
@@ -150,7 +154,9 @@ border: none;
 padding-top: 15px;
 }
 .nav > li > a:hover {
-background-color: #ecf0f1;
+    background-color: #1abc9c;
+        color: white;
+    opacity: 0.6;
 }
 .nav > li > a {
     font-size: 13px;
@@ -366,6 +372,7 @@ padding: 0;
 .list-row:hover {
 
 background-color: #f9f9f9;
+
 }
 
 .list-value{
@@ -386,3 +393,42 @@ background-color: #f9f9f9;
 background-color: #f9f9f9;
 
 }
+
+
+.fn-gantt .navigate .nav-slider-button {
+
+    background: none !important;
+    border-radius: 50%;
+    transition: background 0.25s;
+    background-color: rgb(22, 160, 133)!important;
+    z-index: 2;
+    margin-top: -6px !important;
+    width: 18px !important;
+    height: 18px !important;
+}
+
+.gantt, .gantt2 {
+    background-color: white;
+    padding: 20px;
+    border-radius: 0;
+
+} 
+
+.fn-gantt .leftPanel .name, .fn-gantt .leftPanel .desc, .fn-gantt .spacer, .fn-gantt .wd, .fn-gantt .rightPanel .month, .fn-gantt .rightPanel .year, .fn-gantt .bottom {
+
+    background-color: white !important;
+}
+
+.frappe-list > .list-filters > .show_filters > .set-filters > .text-muted {
+color: white !important;
+}
+
+.timeline-head {
+background-color: #F5F5F6;
+}
+
+.timeline-item {
+
+background-color: white;
+}
+
