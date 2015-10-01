@@ -6,6 +6,10 @@
 /*
  *	/home/syskleister/frappe-bench/apps/erpnext/erpnext/public/css/justerp-website.css
  */
+
+/*
+ *	/home/syskleister/frappe-bench/apps/erpnext/erpnext/public/css/justerp-website.css
+ */
 .web-long-description {
   font-size: 18px;
   line-height: 200%;
@@ -101,31 +105,31 @@ text-transform: uppercase;
     font-stretch: condensed;
 }
 
-.navbar-brand:hover >a {
+.navbar-default .navbar-brand:hover {
 color: white;
 }
 
 .btn-primary {
-background-color: #1abc9c
+background-color: #1abc9c;
     border: none;
 }
 
 .btn-primary:hover {
 opacity: 0.5;
+background-color: #1abc9c;
 }
 
 
 .btn-default:hover, .btn-default:focus, .btn-default.focus, .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
     background-color: #1abc9c;
     color: white;
-
 }
 
 .nav > li {
 margin: 0px 2px 0 2px;
 }
 
-.nav > li:hover, .nav > li:active,.nav > li:focus, {
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus, .navbar-nav > li > a:active  {
 background-color: #1abc9c;
 border-radius: 5px;
 color: white;
@@ -135,6 +139,7 @@ color: white;
     background-color: #ecf0f1;
 
 }
+
 
 
 
