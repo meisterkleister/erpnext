@@ -105,7 +105,7 @@ text-transform: uppercase;
     font-stretch: condensed;
 }
 
-.navbar-default .navbar-brand:hover {
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:active {
 color: white;
 }
 
