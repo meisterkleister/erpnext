@@ -9,6 +9,9 @@ from frappe import throw, _
 from frappe.utils import formatdate
 import frappe.desk.reportview
 
+# imported to enable erpnext.accounts.utils.get_account_currency
+from erpnext.accounts.doctype.account.account import get_account_currency
+
 class FiscalYearError(frappe.ValidationError): pass
 class BudgetError(frappe.ValidationError): pass
 
@@ -94,8 +97,8 @@ def get_balance_on(account=None, date=None, party_type=None, party=None, in_acco
 				select name from `tabAccount` ac where ac.name = gle.account
 				and ac.lft >= %s and ac.rgt <= %s
 			)""" % (acc.lft, acc.rgt))
-			
-			# If group and currency same as company, 
+
+			# If group and currency same as company,
 			# always return balance based on debit and credit in company currency
 			if acc.account_currency == frappe.db.get_value("Company", acc.company, "default_currency"):
 				in_account_currency = False
@@ -195,6 +198,8 @@ def update_against_doc(d, jv_obj):
 	"""
 	jv_detail = jv_obj.get("accounts", {"name": d["voucher_detail_no"]})[0]
 	jv_detail.set(d["dr_or_cr"], d["allocated_amt"])
+	jv_detail.set('debit' if d['dr_or_cr']=='debit_in_account_currency' else 'credit', 
+		d["allocated_amt"]*flt(jv_detail.exchange_rate))
 
 	original_reference_type = jv_detail.reference_type
 	original_reference_name = jv_detail.reference_name
@@ -207,6 +212,9 @@ def update_against_doc(d, jv_obj):
 			select cost_center, balance, against_account, is_advance, account_type, exchange_rate
 			from `tabJournal Entry Account` where name = %s
 		""", d['voucher_detail_no'], as_dict=True)
+		
+		amount_in_account_currency = flt(d['unadjusted_amt']) - flt(d['allocated_amt'])
+		amount_in_company_currency = amount_in_account_currency * flt(jvd[0]['exchange_rate'])
 
 		# new entry with balance amount
 		ch = jv_obj.append("accounts")
@@ -217,8 +225,14 @@ def update_against_doc(d, jv_obj):
 		ch.party = d["party"]
 		ch.cost_center = cstr(jvd[0]["cost_center"])
 		ch.balance = flt(jvd[0]["balance"])
-		ch.set(d['dr_or_cr'], flt(d['unadjusted_amt']) - flt(d['allocated_amt']))
-		ch.set(d['dr_or_cr']== 'debit' and 'credit' or 'debit', 0)
+		
+		ch.set(d['dr_or_cr'], amount_in_account_currency)
+		ch.set('debit' if d['dr_or_cr']=='debit_in_account_currency' else 'credit', amount_in_company_currency)
+		
+		ch.set('credit_in_account_currency' if d['dr_or_cr']== 'debit_in_account_currency' 
+			else 'debit_in_account_currency', 0)
+		ch.set('credit' if d['dr_or_cr']== 'debit_in_account_currency' else 'debit', 0)
+		
 		ch.against_account = cstr(jvd[0]["against_account"])
 		ch.reference_type = original_reference_type
 		ch.reference_name = original_reference_name
