@@ -59,10 +59,6 @@ frappe.ui.form.on("Item", {
 		erpnext.item.toggle_reqd(frm);
 
 		erpnext.item.toggle_attributes(frm);
-
-		if (frm.is_new() && frm.doc.is_stock_item) {
-			frm.fields_dict.inventory.collapse(false);
-		}
 	},
 
 	validate: function(frm){
@@ -95,7 +91,6 @@ frappe.ui.form.on("Item", {
 	},
 
 	is_stock_item: function(frm) {
-		frm.is_new() && frm.fields_dict.inventory.collapse(!frm.doc.is_stock_item);
 		erpnext.item.toggle_reqd(frm);
 	},
 
@@ -121,11 +116,7 @@ $.extend(erpnext.item, {
 		// --------------------------------
 		frm.fields_dict['income_account'].get_query = function(doc) {
 			return {
-				filters: {
-					"report_type": "Profit and Loss",
-					"is_group": 0,
-					'account_type': "Income Account"
-				}
+				query: "erpnext.controllers.queries.get_income_account"
 			}
 		}
 

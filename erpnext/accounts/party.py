@@ -51,7 +51,8 @@ def _get_party_details(party=None, account=None, party_type="Customer", company=
 	# sales team
 	if party_type=="Customer":
 		out["sales_team"] = [{
-			"sales_person": d.sales_person
+			"sales_person": d.sales_person,
+			"allocated_percentage": d.allocated_percentage or None
 		} for d in party.get("sales_team")]
 
 	return out
@@ -216,10 +217,16 @@ def validate_party_accounts(doc):
 
 	for account in doc.get("accounts"):
 		if account.company in companies:
-			frappe.throw(_("There can only be 1 Account per Company in {0} {1}").format(doc.doctype, doc.name),
-				DuplicatePartyAccountError)
+			frappe.throw(_("There can only be 1 Account per Company in {0} {1}")
+				.format(doc.doctype, doc.name), DuplicatePartyAccountError)
 		else:
 			companies.append(account.company)
+		
+		party_account_currency = frappe.db.get_value("Account", account.account, "account_currency")
+		existing_gle_currency = get_party_gle_currency(doc.doctype, doc.name, account.company)
+		
+		if existing_gle_currency and party_account_currency != existing_gle_currency:
+			frappe.throw(_("Accounting entries have already been made in currency {0} for company {1}. Please select a receivable or payable account with currency {0}.").format(existing_gle_currency, account.company))
 
 @frappe.whitelist()
 def get_due_date(posting_date, party_type, party, company):
